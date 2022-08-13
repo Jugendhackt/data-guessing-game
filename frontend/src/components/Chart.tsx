@@ -2,14 +2,14 @@ import React, { useEffect, useState, useRef } from "react";
 import styled from "@emotion/styled";
 import { Answer } from "../types";
 
-type Props = {datapoints: Answer}
+type Props = {datapoints: Answer, showAnswer: boolean}
 
 const Canvas = styled.canvas`
   width: 100%;
   height: 100%;
 `;
 
-export const Chart: React.FC<Props> = ({ datapoints }) => {
+export const Chart: React.FC<Props> = ({ datapoints, showAnswer }) => {
   const canvasRef = useRef(null);
 
   const [guess, setGuess] = useState([]);
@@ -94,10 +94,10 @@ export const Chart: React.FC<Props> = ({ datapoints }) => {
     context.fillStyle = "black";
     context.textAlign = "center";
     context.textBaseline = "middle";
-    context.fillText(minYear, margin, canvas.height - margin + margin / 2);
-    context.fillText(maxYear, canvas.width - margin, canvas.height - margin + margin / 2);
-    context.fillText(minValue, margin - margin / 2, canvas.height - margin);
-    context.fillText(maxValue, margin - margin / 2, margin);
+    context.fillText(Math.round(minYear*10)/10, margin, canvas.height - margin + margin / 2);
+    context.fillText(Math.round(maxYear*10)/10, canvas.width - margin, canvas.height - margin + margin / 2);
+    context.fillText(Math.round(minValue*10)/10, margin - margin / 2, canvas.height - margin);
+    context.fillText(Math.round(maxValue*10)/10, margin - margin / 2, margin);
 
     // Axis lines
     context.strokeStyle = "gray";
@@ -120,24 +120,26 @@ export const Chart: React.FC<Props> = ({ datapoints }) => {
 
     let prevX: number, prevY: number;
 
-    context.strokeStyle = "black";
-    datapoints.forEach(({ year, value }) => {
-      const x = margin + (year - minYear) / (maxYear - minYear) * (canvas.width - 2 * margin);
-      const y = canvas.height - margin - (value - minValue) / (maxValue - minValue) * (canvas.height - 2 * margin);
-      context.beginPath();
-      context.arc(x, y, 4, 0, 2 * Math.PI);
-      context.fill();
-      context.closePath();
-
-      if (prevX) {
+    if (showAnswer) {
+      context.strokeStyle = "black";
+      datapoints.forEach(({ year, value }) => {
+        const x = margin + (year - minYear) / (maxYear - minYear) * (canvas.width - 2 * margin);
+        const y = canvas.height - margin - (value - minValue) / (maxValue - minValue) * (canvas.height - 2 * margin);
         context.beginPath();
-        context.moveTo(prevX, prevY);
-        context.lineTo(x, y);
-        context.stroke();
-      }
-      prevX = x;
-      prevY = y;
-    });
+        context.arc(x, y, 4, 0, 2 * Math.PI);
+        context.fill();
+        context.closePath();
+
+        if (prevX) {
+          context.beginPath();
+          context.moveTo(prevX, prevY);
+          context.lineTo(x, y);
+          context.stroke();
+        }
+        prevX = x;
+        prevY = y;
+      });
+    }
 
     prevX = prevY = null;
     context.strokeStyle = "blue";
@@ -160,7 +162,7 @@ export const Chart: React.FC<Props> = ({ datapoints }) => {
       prevX = x;
       prevY = y;
     });
-  }, [canvasRef, guess, datapoints]);
+  }, [canvasRef, guess, datapoints, showAnswer]);
 
   return (
           <>

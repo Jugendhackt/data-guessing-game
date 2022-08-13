@@ -24,7 +24,7 @@ const StyledHeader = styled.header`
 export const Header: React.FC = () => {
   return (
     <StyledHeader>
-        <h1>Data Guessing Game</h1>
+        <h1>Chart Guessr</h1>
     </StyledHeader>
   );
 };

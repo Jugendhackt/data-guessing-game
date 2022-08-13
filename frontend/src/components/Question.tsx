@@ -16,7 +16,7 @@ export const Question: React.FC<QuestionType & ShowAnswer> = ({ answer, question
         <Wrapper>
             <div>{question}</div>
             <div>
-                <Chart datapoints={answer} />
+                <Chart datapoints={answer} showAnswer={showAnswer} />
             </div>
             <div>
                 <button onClick={() => setShowAnswer(true)}>Guess</button>
