@@ -6,59 +6,70 @@ type Props = {datapoints: Answer}
 
 const Canvas = styled.canvas`
   width: 100%;
-  height: 50%;
-  `;
+  height: 100%;
+`;
 
 export const Chart: React.FC<Props> = ({ datapoints }) => {
   const canvasRef = useRef(null);
 
-  let [guess, setGuess] = useState([])
-  let [n, setN] = useState(0)
+  const [guess, setGuess] = useState([]);
+  const [n, setN] = useState(0);
 
-    const margin = 50;
+  const margin = 50;
 
-function draw(e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
-  const minYear = Math.min(...datapoints.map(d => d.year));
-  const maxYear = Math.max(...datapoints.map(d => d.year));
-  const minValue = Math.min(...datapoints.map(d => d.value));
-  const maxValue = Math.max(...datapoints.map(d => d.value));
+  function draw (e: React.MouseEvent<HTMLCanvasElement, MouseEvent> | React.TouchEvent<HTMLCanvasElement>) {
+    let clientX = 0;
+    let clientY = 0;
+
+    if (isTouches(e)) {
+      clientX = e.touches[0].pageX;
+      clientY = e.touches[0].pageY;
+    } else {
+      clientX = e.clientX;
+      clientY = e.clientY;
+    }
+
+    const minYear = Math.min(...datapoints.map(d => d.year));
+    const maxYear = Math.max(...datapoints.map(d => d.year));
+    const minValue = Math.min(...datapoints.map(d => d.value));
+    const maxValue = Math.max(...datapoints.map(d => d.value));
     const canvas = canvasRef.current;
     const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const year = ((x-margin) / (rect.width - margin*2)) * (maxYear - minYear) + minYear;
-    const value = (((rect.height - (y+margin)) / (rect.height - margin*2)) * (maxValue - minValue) + minValue);
-    let newPoint = {year, value}
-    console.log("draw()")
-    console.log(newPoint)
-    setN(n+1)
-    console.log(n)
-    setGuess(oldGuess => [...oldGuess, newPoint])
-    console.log(guess)
+    const x = clientX - rect.left;
+    const y = clientY - rect.top;
+    const year = ((x - margin) / (rect.width - margin * 2)) * (maxYear - minYear) + minYear;
+    const value = (((rect.height - (y + margin)) / (rect.height - margin * 2)) * (maxValue - minValue) + minValue);
+    const newPoint = { year, value };
+    console.log("draw()");
+    console.log(newPoint);
+    setN(n + 1);
+    console.log(n);
+    setGuess(oldGuess => [...oldGuess, newPoint]);
+    console.log(guess);
   }
 
-  let [mouseIsDown, setMouseIsDown] = useState(false)
+  const [mouseIsDown, setMouseIsDown] = useState(false);
 
-  function mouseDown(e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
-    console.log("mouseDown")
-    draw(e)
-    setMouseIsDown(true)
+  const isTouches = (e: React.MouseEvent<HTMLCanvasElement, MouseEvent> | React.TouchEvent<HTMLCanvasElement>): e is React.TouchEvent<HTMLCanvasElement> => ("touches" in e);
+
+  function mouseDown (e: React.MouseEvent<HTMLCanvasElement, MouseEvent> | React.TouchEvent<HTMLCanvasElement>) {
+    console.log("mouseDown");
+    draw(e);
+    setMouseIsDown(true);
   }
 
-  function mouseMove(e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
-  if (mouseIsDown) {
-      draw(e)
-  }
+  function mouseMove (e: React.MouseEvent<HTMLCanvasElement, MouseEvent> | React.TouchEvent<HTMLCanvasElement>) {
+    if (mouseIsDown) {
+      draw(e);
+    }
   }
 
-  function mouseUp(_: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
-    setMouseIsDown(false)
+  function mouseUp (_: React.MouseEvent<HTMLCanvasElement, MouseEvent> | React.TouchEvent<HTMLCanvasElement>) {
+    setMouseIsDown(false);
   }
 
   useEffect(() => {
-    //console.log("useEffect")
-    //setGuess(oldGuess => [...oldGuess, {year: 2020, value: 0}])
-    console.log(guess)
+    console.log(guess);
     if (canvasRef === null) {
       return;
     }
@@ -67,17 +78,16 @@ function draw(e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
     context.fillStyle = "white";
     context.fillRect(0, 0, canvas.width, canvas.height);
 
-  const minYear = Math.min(...datapoints.map(d => d.year));
-  const maxYear = Math.max(...datapoints.map(d => d.year));
-  const minValue = Math.min(...datapoints.map(d => d.value));
-  const maxValue = Math.max(...datapoints.map(d => d.value));
+    const minYear = Math.min(...datapoints.map(d => d.year));
+    const maxYear = Math.max(...datapoints.map(d => d.year));
+    const minValue = Math.min(...datapoints.map(d => d.value));
+    const maxValue = Math.max(...datapoints.map(d => d.value));
 
-   //guess = []
-   Array.from({length: maxYear - minYear + 1}, (_, i) => {
-        const year = minYear + i;
-        //guess.push({year, value: 20});
-        })
-    console.log(guess)
+    // Array.from({ length: maxYear - minYear + 1 }, (_, i) => {
+    //   const year = minYear + i;
+    //   // guess.push({year, value: 20});
+    // });
+    console.log(guess);
 
     // Axis labels
     context.font = "12px Arial";
@@ -129,10 +139,10 @@ function draw(e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
       prevY = y;
     });
 
-    prevX = prevY = null
+    prevX = prevY = null;
     context.strokeStyle = "blue";
     context.fillStyle = "blue";
-    console.log(guess.length)
+    console.log(guess.length);
     guess.forEach(({ year, value }) => {
       const x = margin + (year - minYear) / (maxYear - minYear) * (canvas.width - 2 * margin);
       const y = canvas.height - margin - (value - minValue) / (maxValue - minValue) * (canvas.height - 2 * margin);
@@ -154,7 +164,7 @@ function draw(e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
 
   return (
           <>
-              <Canvas ref={canvasRef} onMouseDown={mouseDown} onMouseMove={mouseMove} onMouseUp={mouseUp} width="800" height="400"></Canvas>
+              <Canvas ref={canvasRef} onMouseDown={mouseDown} onMouseMove={mouseMove} onMouseUp={mouseUp} onTouchStart={mouseDown} onTouchMove={mouseMove} onTouchEnd={mouseUp} height="400"></Canvas>
           </>
   );
 };

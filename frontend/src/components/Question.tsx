@@ -4,16 +4,23 @@ import { Question as QuestionType, ShowAnswer } from "../types";
 import { Chart } from "./Chart";
 
 const Wrapper = styled.div`
-    /* display: flex; */
+    display: flex;
+    flex-direction: column;
+    & div {
+        margin: 0 0 1rem 0;
+    }
 `;
 
 export const Question: React.FC<QuestionType & ShowAnswer> = ({ answer, question, setShowAnswer, showAnswer }) => {
-  return (
+    return (
         <Wrapper>
             <div>{question}</div>
-            <Chart datapoints={answer} />
-            <div><input type="text" /><button onClick={() => setShowAnswer(true)}>Guess</button></div>
-            {showAnswer ? <div>{JSON.stringify(answer)}</div> : null}
+            <div>
+                <Chart datapoints={answer} />
+            </div>
+            <div>
+                <button onClick={() => setShowAnswer(true)}>Guess</button>
+            </div>
         </Wrapper>
-  );
+    );
 };
