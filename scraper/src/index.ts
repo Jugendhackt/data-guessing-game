@@ -1,15 +1,16 @@
-import { readdirSync, createReadStream } from 'fs'
+import { readdirSync, createReadStream, writeFileSync } from 'fs'
 //import csv from 'csv-parser'
 const csv = require('csv-parser')
 
 // @ts-ignore
 const diagrams = readdirSync('owid-datasets/datasets/', { withFileTypes: true })
     .filter(dirent => dirent.isDirectory())
-    .map(dirent => dirent.name)
+    .map(dirent => dirent.name).slice(0, 100)
 
-const questions = []
+buildQuestions()
 
-diagrams.forEach(diagram => {
+async function buildQuestions() {
+    const questions = await Promise.all(diagrams.map(diagram => new Promise((resolve) => {
     //readFile(`owid-datasets/datasets/${diagram}/datapackage.json`, (_, data) => {
     //    const datapackage = JSON.parse(data.toString())
     //    console.log(datapackage)
@@ -64,18 +65,17 @@ diagrams.forEach(diagram => {
                 if (line["Entity"] === entity) {
                     const year = parseInt(line["Year"])
                     const value = parseFloat(line[interestingColumn])
-                    const dataPoint = {year, value}
-                    data.answer.push(dataPoint)
+                    if (value > 0) {
+                        const dataPoint = {year, value}
+                        data.answer.push(dataPoint)
+                    }
                 }
             })
             console.log(data)
-            questions.push(data)
+            resolve(data)
         }
       });
-
-    //readFile(csvFileName, (_, data) => {
-    //    const content = data.toString()
-    //    console.log(.split('\n').length)
-    //})
-
-})
+    })))
+    console.log(questions.length)
+    writeFileSync('questions.json', JSON.stringify(questions))
+}
