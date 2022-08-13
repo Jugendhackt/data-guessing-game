@@ -1,9 +1,15 @@
+import styled from "@emotion/styled";
 import React, { useEffect, useRef } from "react";
 import { Answer } from "../types";
 
 type Props = {datapoints: Answer}
 
-export const Chart: React.FC<Props> = ({datapoints}) => {
+const Canvas = styled.canvas`
+  width: 100%;
+  height: 50%;
+  `;
+
+export const Chart: React.FC<Props> = ({ datapoints }) => {
   const canvasRef = useRef(null);
   useEffect(() => {
     if (canvasRef === null) {
@@ -74,7 +80,7 @@ export const Chart: React.FC<Props> = ({datapoints}) => {
   return (
           <>
               <div> Hello, I am a chart! </div>
-              <canvas ref={canvasRef} width="800" height="400"></canvas>
+              <Canvas ref={canvasRef}></Canvas>
           </>
   );
 };
