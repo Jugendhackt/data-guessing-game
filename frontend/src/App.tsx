@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
+import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 
 type Questions = Array<{
@@ -44,17 +45,14 @@ function App () {
                 ? <div>
                     Actual answer:
                     {question.answer}
-                    <input
-                        onClick={() => {
-                          setCurrentQuestion(currentQuestion + 1);
-                          setShowAnswer(false);
-                        }}
-                        type="button"
-                        value="Next"
-                    />
+
                 </div>
                 : null}
           </div>
+          <Footer onClick={() => {
+            setCurrentQuestion(currentQuestion + 1);
+            setShowAnswer(false);
+          }}/>
       </div>
   );
 }

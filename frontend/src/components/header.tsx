@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import React from "react";
 
 const StyledHeader = styled.header`
- color:purple;
+ 
  display: flex;
  align-items: center;
  position: fixed;
