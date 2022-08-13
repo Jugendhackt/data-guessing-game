@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction } from "react";
 export type Answer = Array<{year: number; value: number}>
 
 export type Question = {
-    answerType: "value";
+    type: "series" | string;
     question: string;
     answer: Answer;
 }

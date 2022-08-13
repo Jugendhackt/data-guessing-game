@@ -28,7 +28,7 @@
     "build": "tsc",
     "lint": "tslint -c tslint.json src/**/*.ts",
     "prepublish": "npm run build",
-    "run": "node ./lib/index.js",
+    "run": "node ./lib/index.js && cp questions.json ../frontend/src/",
     "prerun": "git clone https://github.com/owid/owid-datasets || true"
   }
 }
