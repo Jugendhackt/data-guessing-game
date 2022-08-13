@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
+import { Header } from "./components/Header";
 
 type Questions = Array<{
     answerType: "value",
@@ -27,6 +28,7 @@ function App () {
 
   return (
       <div className="App">
+          <Header/>
           <div key={question.question}>
               {question.question}
           </div>
