@@ -84,10 +84,10 @@ function draw(e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
     context.fillStyle = "black";
     context.textAlign = "center";
     context.textBaseline = "middle";
-    context.fillText(minYear, margin, canvas.height - margin + margin / 2);
-    context.fillText(maxYear, canvas.width - margin, canvas.height - margin + margin / 2);
-    context.fillText(minValue, margin - margin / 2, canvas.height - margin);
-    context.fillText(maxValue, margin - margin / 2, margin);
+    context.fillText(Math.round(minYear*10)/10, margin, canvas.height - margin + margin / 2);
+    context.fillText(Math.round(maxYear*10)/10, canvas.width - margin, canvas.height - margin + margin / 2);
+    context.fillText(Math.round(minValue*10)/10, margin - margin / 2, canvas.height - margin);
+    context.fillText(Math.round(maxValue*10)/10, margin - margin / 2, margin);
 
     // Axis lines
     context.strokeStyle = "gray";
