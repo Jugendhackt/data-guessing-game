@@ -1,9 +1,15 @@
 import React, { useEffect, useState, useRef } from "react";
+import styled from "@emotion/styled";
 import { Answer } from "../types";
 
 type Props = {datapoints: Answer}
 
-export const Chart: React.FC<Props> = ({datapoints}) => {
+const Canvas = styled.canvas`
+  width: 100%;
+  height: 50%;
+  `;
+
+export const Chart: React.FC<Props> = ({ datapoints }) => {
   const canvasRef = useRef(null);
 
   let [guess, setGuess] = useState([])
@@ -148,7 +154,7 @@ function draw(e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
 
   return (
           <>
-              <canvas ref={canvasRef} onMouseDown={mouseDown} onMouseMove={mouseMove} onMouseUp={mouseUp} width="800" height="400"></canvas>
+              <Canvas ref={canvasRef} onMouseDown={mouseDown} onMouseMove={mouseMove} onMouseUp={mouseUp} width="800" height="400"></Canvas>
           </>
   );
 };
