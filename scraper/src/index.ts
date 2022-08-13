@@ -24,8 +24,9 @@ function shuffle(array: Array<any>) {
 // @ts-ignore
 let diagrams = readdirSync('owid-datasets/datasets/', { withFileTypes: true })
     .filter(dirent => dirent.isDirectory())
-    .map(dirent => dirent.name).slice(0, 100)
+    .map(dirent => dirent.name)
 shuffle(diagrams)
+diagrams = diagrams.slice(0, 100)
 
 buildQuestions()
 
