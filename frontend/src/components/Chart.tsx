@@ -150,7 +150,7 @@ function draw(e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) {
       prevX = x;
       prevY = y;
     });
-  }, [canvasRef, guess]);
+  }, [canvasRef, guess, datapoints]);
 
   return (
           <>

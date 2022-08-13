@@ -3,7 +3,6 @@ import "./App.css";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 import { Question } from "./components/Question";
-import { Chart } from "./components/Chart";
 import questions from "./questions.json";
 
 function App () {
@@ -15,7 +14,6 @@ function App () {
       <div className="App">
           <Header/>
           <Question {...question} showAnswer={showAnswer} setShowAnswer={setShowAnswer}/>
-          <Chart datapoints={question.answer} />
           <Footer onClick={() => {
             setCurrentQuestion(currentQuestion + 1);
             setShowAnswer(false);
