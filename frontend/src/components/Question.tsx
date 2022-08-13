@@ -11,7 +11,7 @@ export const Question: React.FC<QuestionType & ShowAnswer> = ({ answer, question
   return (
         <Wrapper>
             <div>{question}</div>
-            <Chart datapoints={answer} />
+            <Chart datapoints={answer} showAnswer={showAnswer} />
             <div><input type="text" /><button onClick={() => setShowAnswer(true)}>Guess</button></div>
             {showAnswer ? <div>{JSON.stringify(answer)}</div> : null}
         </Wrapper>
