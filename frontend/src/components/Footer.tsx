@@ -5,9 +5,9 @@ const StyledFooter = styled.footer`
     display: flex;
     position: fixed;
     bottom: 0;
-    margin: 20px;
+    margin: 2rem 0;
     align-items: center;
-    right: 20px;
+    right: 2rem;
 `;
 
 type Props = {
