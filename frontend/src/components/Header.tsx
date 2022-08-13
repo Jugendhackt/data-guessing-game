@@ -22,9 +22,9 @@ const StyledHeader = styled.header`
 `;
 
 export const Header: React.FC = () => {
-  return (
-    <StyledHeader>
-        <h1>Chart Guessr</h1>
-    </StyledHeader>
-  );
+    return (
+        <StyledHeader>
+            <h1>Chart Guessr</h1>
+        </StyledHeader>
+    );
 };

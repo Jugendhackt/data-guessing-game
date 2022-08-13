@@ -33,10 +33,10 @@ type Props = {
 }
 
 export const Footer: React.FC<Props> = ({ onClick }) => {
-  return (
+    return (
         <StyledFooter>
             <button onClick={onClick}>Next question</button>
             <div>With data from <a href="https://ourworldindata.org" target="_blank" rel="noreferrer">ourworldindata.org</a></div>
         </StyledFooter>
-  );
+    );
 };
