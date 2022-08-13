@@ -5,7 +5,7 @@ const csv = require('csv-parser')
 // @ts-ignore
 const diagrams = readdirSync('owid-datasets/datasets/', { withFileTypes: true })
     .filter(dirent => dirent.isDirectory())
-    .map(dirent => dirent.name).slice(0, 100)
+    .map(dirent => dirent.name).slice(0, 10)
 
 buildQuestions()
 
@@ -71,8 +71,10 @@ async function buildQuestions() {
                     }
                 }
             })
-            console.log(data)
-            resolve(data)
+            if (data.answer.length > 2) {
+                console.log(data)
+                resolve(data)
+            }
         }
       });
     })))
