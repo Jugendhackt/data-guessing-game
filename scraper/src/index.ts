@@ -71,8 +71,10 @@ async function buildQuestions() {
                     }
                 }
             })
-            console.log(data)
-            resolve(data)
+            if (data.answer.length > 2) {
+                console.log(data)
+                resolve(data)
+            }
         }
       });
     })))
