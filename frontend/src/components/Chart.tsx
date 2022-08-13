@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from "react";
 import { Answer } from "../types";
 
-type Props = Answer
+type Props = {datapoints: Answer}
 
-export const Chart: React.FC<Props> = (datapoints) => {
+export const Chart: React.FC<Props> = ({datapoints}) => {
   const canvasRef = useRef(null);
   useEffect(() => {
     if (canvasRef === null) {
