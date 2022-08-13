@@ -1,9 +1,11 @@
 import { Dispatch, SetStateAction } from "react";
 
+export type Answer = Array<{year: number; value: number}>
+
 export type Question = {
     answerType: "value";
     question: string;
-    answer: number;
+    answer: Answer;
 }
 
 export type Questions = Array<Question>;
