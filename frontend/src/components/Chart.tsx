@@ -17,7 +17,6 @@ export const Chart: React.FC<Props> = ({ datapoints, showAnswer }) => {
     const canvasRef = useRef(null);
     const [mouseIsDown, setMouseIsDown] = useState(false);
     const [guess, setGuess] = useState([]);
-    const [n, setN] = useState(0);
 
     const margin = 50;
 
@@ -44,16 +43,10 @@ export const Chart: React.FC<Props> = ({ datapoints, showAnswer }) => {
         const year = ((x - margin) / (rect.width - margin * 2)) * (maxYear - minYear) + minYear;
         const value = (((rect.height - (y + margin)) / (rect.height - margin * 2)) * (maxValue - minValue) + minValue);
         const newPoint = { year, value };
-        console.log("draw()");
-        console.log(newPoint);
-        setN(n + 1);
-        console.log(n);
         setGuess(oldGuess => [...oldGuess, newPoint]);
-        console.log(guess);
     }
 
     function mouseDown (e: React.MouseEvent<HTMLCanvasElement, MouseEvent> | React.TouchEvent<HTMLCanvasElement>) {
-        console.log("mouseDown");
         draw(e);
         setMouseIsDown(true);
     }
@@ -64,12 +57,11 @@ export const Chart: React.FC<Props> = ({ datapoints, showAnswer }) => {
         }
     }
 
-    function mouseUp (_: React.MouseEvent<HTMLCanvasElement, MouseEvent> | React.TouchEvent<HTMLCanvasElement>) {
+    function mouseUp () {
         setMouseIsDown(false);
     }
 
     useEffect(() => {
-        console.log(guess);
         if (canvasRef === null) {
             return;
         }
@@ -84,8 +76,6 @@ export const Chart: React.FC<Props> = ({ datapoints, showAnswer }) => {
         const maxValue = Math.max(...datapoints.map(d => d.value));
         const minFormattedValue = formatNumber(minValue);
         const maxFormatedValue = formatNumber(maxValue);
-
-        console.log("draw", guess, minFormattedValue, maxFormatedValue);
 
         // Axis labels
         context.font = "12px Arial";
@@ -143,7 +133,6 @@ export const Chart: React.FC<Props> = ({ datapoints, showAnswer }) => {
         prevX = prevY = null;
         context.strokeStyle = "blue";
         context.fillStyle = "blue";
-        console.log(guess.length);
         guess.forEach(({ year, value }) => {
             const x = margin + (year - minYear) / (maxYear - minYear) * (canvas.width - 2 * margin);
             const y = canvas.height - margin - (value - minValue) / (maxValue - minValue) * (canvas.height - 2 * margin);
@@ -170,8 +159,6 @@ export const Chart: React.FC<Props> = ({ datapoints, showAnswer }) => {
     }, [showAnswer, datapoints]);
 
     return (
-        <>
-            <Canvas ref={canvasRef} onMouseDown={mouseDown} onMouseMove={mouseMove} onMouseUp={mouseUp} onTouchStart={mouseDown} onTouchMove={mouseMove} onTouchEnd={mouseUp} height="400"></Canvas>
-        </>
+        <Canvas ref={canvasRef} onMouseDown={mouseDown} onMouseMove={mouseMove} onMouseUp={mouseUp} onTouchStart={mouseDown} onTouchMove={mouseMove} onTouchEnd={mouseUp} height="400" />
     );
 };

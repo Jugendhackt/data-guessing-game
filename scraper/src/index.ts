@@ -32,11 +32,6 @@ buildQuestions()
 
 async function buildQuestions() {
     let questions = await Promise.all(diagrams.map(diagram => new Promise((resolve) => {
-    //readFile(`owid-datasets/datasets/${diagram}/datapackage.json`, (_, data) => {
-    //    const datapackage = JSON.parse(data.toString())
-    //    console.log(datapackage)
-    //})
-
     const csvFiles = readdirSync(`owid-datasets/datasets/${diagram}`, { withFileTypes: true }).filter(fn => fn.name.endsWith(".csv"))
     const csvFileName = `owid-datasets/datasets/${diagram}/${csvFiles[0].name}`
 
@@ -67,8 +62,6 @@ async function buildQuestions() {
 
             Object.keys(results[0]).filter(key => key !== "Entity" && key !== "Year").forEach(key => columns.push(key))
 
-            console.log(`${minYear} - ${maxYear}`)
-
             const interestingColumn = columns[columns.length - 1]
             let entity: string
             if (entities.has("World")) {
@@ -93,7 +86,6 @@ async function buildQuestions() {
                 }
             })
             if (data.answer.length > 2) {
-                console.log(data)
                 resolve(data)
             }
             resolve(null)
@@ -101,6 +93,5 @@ async function buildQuestions() {
       });
     })))
     questions = questions.filter(q => q !== null)
-    console.log(questions.length)
     writeFileSync('questions.json', JSON.stringify(questions))
 }
