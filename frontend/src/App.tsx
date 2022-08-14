@@ -27,7 +27,7 @@ function App () {
     const [showAnswer, setShowAnswer] = useState(false);
     const [currentQuestion, setCurrentQuestion] = useState(0);
 
-    const shuffledQuestions = useMemo(() =>  shuffle(questions), [])
+    const shuffledQuestions = useMemo(() => shuffle(questions), []);
 
     const question = shuffledQuestions[currentQuestion % shuffledQuestions.length];
 
