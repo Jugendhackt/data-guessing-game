@@ -10,6 +10,7 @@ const Canvas = styled.canvas`
   height: 100%;
   touch-action: none;
   cursor: pointer;
+  max-width: 30rem;
 `;
 
 export const Chart: React.FC<Props> = ({ datapoints, showAnswer }) => {
@@ -161,6 +162,12 @@ export const Chart: React.FC<Props> = ({ datapoints, showAnswer }) => {
             prevY = y;
         });
     }, [canvasRef, guess, datapoints, showAnswer]);
+
+    useEffect(() => {
+        if (!showAnswer) {
+            setGuess([])
+        }
+    }, [showAnswer, datapoints])
 
     return (
         <>
