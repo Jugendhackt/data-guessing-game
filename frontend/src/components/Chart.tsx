@@ -42,8 +42,28 @@ export const Chart: React.FC<Props> = ({ datapoints, showAnswer }) => {
         const y = clientY - rect.top;
         const year = ((x - margin) / (rect.width - margin * 2)) * (maxYear - minYear) + minYear;
         const value = (((rect.height - (y + margin)) / (rect.height - margin * 2)) * (maxValue - minValue) + minValue);
-        const newPoint = { year, value };
-        setGuess(oldGuess => [...oldGuess, newPoint]);
+        const bucketSize = (maxYear - minYear) / 50;
+
+        // find whether there is a guess point at the given year
+        const guessPoint = guess.find(g => Math.abs(g.year - year) < bucketSize);
+        if (guessPoint) {
+            setGuess(oldGuess => {
+                // replace value in guess point
+                const newGuess = oldGuess.map(g => {
+                    if (Math.abs(g.year - year) < bucketSize) {
+                        // round year to bucket size
+                        const roundedYear = Math.round(g.year / bucketSize) * bucketSize;
+                        return { year: roundedYear, value };
+                    }
+                    return g;
+                }
+                );
+                return newGuess;
+            });
+        } else {
+            const newPoint = { year, value };
+            setGuess(oldGuess => [...oldGuess, newPoint]);
+        }
     }
 
     function mouseDown (e: React.MouseEvent<HTMLCanvasElement, MouseEvent> | React.TouchEvent<HTMLCanvasElement>) {
@@ -141,12 +161,12 @@ export const Chart: React.FC<Props> = ({ datapoints, showAnswer }) => {
             context.fill();
             context.closePath();
 
-            if (prevX) {
-                context.beginPath();
-                context.moveTo(prevX, prevY);
-                context.lineTo(x, y);
-                context.stroke();
-            }
+            // if (prevX) {
+            //     context.beginPath();
+            //     context.moveTo(prevX, prevY);
+            //     context.lineTo(x, y);
+            //     context.stroke();
+            // }
             prevX = x;
             prevY = y;
         });
