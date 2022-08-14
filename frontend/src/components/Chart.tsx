@@ -161,6 +161,12 @@ export const Chart: React.FC<Props> = ({ datapoints, showAnswer }) => {
         });
     }, [canvasRef, guess, datapoints, showAnswer]);
 
+    useEffect(() => {
+        if (!showAnswer) {
+            setGuess([])
+        }
+    }, [showAnswer, datapoints])
+
     return (
         <>
             <Canvas ref={canvasRef} onMouseDown={mouseDown} onMouseMove={mouseMove} onMouseUp={mouseUp} onTouchStart={mouseDown} onTouchMove={mouseMove} onTouchEnd={mouseUp} height="400"></Canvas>
