@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import styled from "@emotion/styled";
 import { Answer } from "../types";
+import { formatNumber } from "./helpers";
 
 type Props = {datapoints: Answer, showAnswer: boolean}
 
@@ -47,7 +48,7 @@ export const Chart: React.FC<Props> = ({ datapoints, showAnswer }) => {
         setGuess(oldGuess => [...oldGuess, newPoint]);
         console.log(guess);
     }
-    
+
     function mouseDown (e: React.MouseEvent<HTMLCanvasElement, MouseEvent> | React.TouchEvent<HTMLCanvasElement>) {
         console.log("mouseDown");
         draw(e);
@@ -78,8 +79,10 @@ export const Chart: React.FC<Props> = ({ datapoints, showAnswer }) => {
         const maxYear = Math.max(...datapoints.map(d => d.year));
         const minValue = Math.min(...datapoints.map(d => d.value));
         const maxValue = Math.max(...datapoints.map(d => d.value));
-        
-        console.log(guess);
+        const minFormattedValue = formatNumber(minValue);
+        const maxFormatedValue = formatNumber(maxValue);
+
+        console.log("draw", guess, minFormattedValue, maxFormatedValue);
 
         // Axis labels
         context.font = "12px Arial";
@@ -88,8 +91,9 @@ export const Chart: React.FC<Props> = ({ datapoints, showAnswer }) => {
         context.textBaseline = "middle";
         context.fillText(Math.round(minYear * 10) / 10, margin, canvas.height - margin + margin / 2);
         context.fillText(Math.round(maxYear * 10) / 10, canvas.width - margin, canvas.height - margin + margin / 2);
-        context.fillText(Math.round(minValue * 10) / 10, margin - margin / 2, canvas.height - margin);
-        context.fillText(Math.round(maxValue * 10) / 10, margin - margin / 2, margin);
+
+        context.fillText(minFormattedValue, margin - margin / 2, canvas.height - margin);
+        context.fillText(maxFormatedValue, margin - margin / 2, margin);
 
         // Axis lines
         context.strokeStyle = "gray";
