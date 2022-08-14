@@ -165,9 +165,9 @@ export const Chart: React.FC<Props> = ({ datapoints, showAnswer }) => {
 
     useEffect(() => {
         if (!showAnswer) {
-            setGuess([])
+            setGuess([]);
         }
-    }, [showAnswer, datapoints])
+    }, [showAnswer, datapoints]);
 
     return (
         <>
