@@ -7,6 +7,7 @@ type Props = {datapoints: Answer, showAnswer: boolean}
 const Canvas = styled.canvas`
   width: 100%;
   height: 100%;
+  max-width: 30rem;
 `;
 
 export const Chart: React.FC<Props> = ({ datapoints, showAnswer }) => {
