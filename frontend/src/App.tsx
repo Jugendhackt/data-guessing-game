@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import "./App.css";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
@@ -27,7 +27,7 @@ function App () {
     const [showAnswer, setShowAnswer] = useState(false);
     const [currentQuestion, setCurrentQuestion] = useState(0);
 
-    const shuffledQuestions = shuffle(questions);
+    const shuffledQuestions = useMemo(() =>  shuffle(questions), [])
 
     const question = shuffledQuestions[currentQuestion % shuffledQuestions.length];
 
